@@ -49,8 +49,8 @@ npm run check:extra
 
 | 变量 | 说明 |
 | --- | --- |
-| `ESERVER_EXTRA_REPO` | 指定仓库地址，覆盖默认源，且不再尝试备源 |
-| `ESERVER_EXTRA_FALLBACK_REPO` | 备源地址，默认源失败后自动重试 |
+| `ESERVER_EXTRA_REPO` | 优先使用的仓库地址，覆盖默认 gitee 源 |
+| `ESERVER_EXTRA_FALLBACK_REPO` | 备源地址，前面的来源都失败时使用 |
 | `ESERVER_EXTRA_BRANCH` | 分支名，默认 `main` |
 | `ESERVER_EXTRA_TOKEN` | HTTPS 访问令牌，用于 CI 拉取私有仓库 |
 | `ESERVER_EXTRA_SKIP_FETCH=1` | 跳过同步，仅校验完整性（离线构建用） |
@@ -62,15 +62,29 @@ node scripts/fetch-extra.mjs --check     # 仅校验
 node scripts/fetch-extra.mjs --force     # extra 存在但不是 Git 仓库时，删除后重新克隆
 ```
 
+## 远端仓库
+
+本仓库同时维护在两个地址，内容一致，均为私有：
+
+| 远端名 | 地址 | 说明 |
+| --- | --- | --- |
+| `gitee` | `git@gitee.com:dragonlhp/EServer-extra.git` | 主源，构建默认优先从这里拉取 |
+| `github` | `git@github.com:cnPauLi/EServer-extra.git` | 镜像备份 |
+
+主仓库的 `fetch:extra` 会按 gitee → github 的顺序尝试，任一可用即可构建。
+
 ## 更新本仓库
 
-`extra` 内的改动只提交到本仓库，不进入主仓库：
+`extra` 内的改动只提交到本仓库，不进入主仓库。**两个远端都要推送**：
 
 ```bash
 git -C extra add -A
 git -C extra commit -m "update: 说明改动内容"
-git -C extra push
+git -C extra push gitee main
+git -C extra push github main
 ```
+
+注意 `git -C extra push`（不带远端名）只会推上游 `gitee`，github 需要显式推送。
 
 主仓库执行 `npm run fetch:extra` 时会 `fetch` 后 `reset --hard`，**本地未推送的 extra 改动会被覆盖**，请先提交并推送。
 
