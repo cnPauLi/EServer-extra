@@ -14,7 +14,7 @@ extra/
 │   │   ├── bin/mkcert       本地 HTTPS 证书工具
 │   │   ├── config/          子应用清单 childApp.json 与图标
 │   │   ├── script/          PHP 扩展编译脚本
-│   │   ├── initFiles/       首次安装下发的 www、custom 模板
+│   │   ├── initFiles/       首次安装资源：www、custom 模板与 downloads 离线包
 │   │   ├── update/          版本升级包与 update.json
 │   │   └── installOrUpdate  首次安装 / 覆盖安装标记
 │   └── x64/Core/            Intel Mac 运行时（结构同上）
@@ -29,9 +29,8 @@ extra/
 1. **`Library` 不可删减**。php-fpm、nginx 等二进制以 `/Applications/EServer/Library/<lib>/lib/*.dylib` 的绝对路径链接动态库，缺少任意一个都会导致服务无法启动。
 2. **`mkcert` 必须存在**。应用启动时会用 `Core/bin/mkcert` 检查并安装本地根证书；缺失会直接抛错。
 3. **PHP 扩展编译依赖 `Library` 的 `include/`、`lib/pkgconfig` 与 `zlib`**，例如 `swoole`（`--enable-openssl`）、`xlswriter`（`--with-zlib-dir`）、`imagick`。
-4. **php / nginx / mysql / phpMyAdmin / Composer 等子应用安装包不在本仓库**。它们由下载服务 `http://dl.eserver.devcn.top/childApp/**` 按需分发。
-5. **`initFiles/downloads` 不入库**。离线安装包体积大且与下载服务重复，已在 `.gitignore` 中排除。
-6. **运行时数据目录不入库**。`settings.json`、`childApp`、`www`、`temp`、`downloads`、`database`、`etc`、`custom` 均为运行期生成，`bin/*` 只保留 `mkcert`。
+4. **`initFiles/downloads` 内置三个平台的离线安装包**（php、nginx、mysql、phpMyAdmin、Composer、Notepad 等）。首次安装时复制到数据目录并解压，保证无网络也能完成初始化；其他版本或后续安装仍由下载服务 `http://dl.eserver.devcn.top/childApp/**` 按需分发。
+5. **运行时数据目录不入库**。`settings.json`、`childApp`、`www`、`temp`、`downloads`、`database`、`etc`、`custom` 均为运行期生成，`bin/*` 只保留 `mkcert`；这里的 `downloads` 指数据目录下的缓存，与 `initFiles/downloads` 不是同一个目录。
 
 ## 在主仓库中拉取
 

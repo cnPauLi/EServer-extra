@@ -23,8 +23,5 @@ win32/core/bin/*
 win32/core/etc
 win32/core/custom
 
-# 大体积离线安装包不入库，按需从下载服务获取
-**/initFiles/downloads/
-
 .DS_Store
 **/.DS_Store
