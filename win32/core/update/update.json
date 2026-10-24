@@ -1,0 +1,4 @@
+{
+    "archiveFile": "5.x.zip",
+    "targetDir":"etc/nginx/conf/php"
+}

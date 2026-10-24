@@ -1,0 +1,30 @@
+# 运行时生成的数据目录，不随仓库分发
+darwin/*/Core/settings.json
+darwin/*/Core/software
+darwin/*/Core/childApp
+darwin/*/Core/www
+darwin/*/Core/temp
+darwin/*/Core/downloads
+darwin/*/Core/database
+darwin/*/Core/bin/*
+!darwin/*/Core/bin/mkcert
+darwin/*/Core/etc
+darwin/*/Core/custom
+
+win32/core/settings.json
+win32/core/software
+win32/core/childApp
+win32/core/www
+win32/core/temp
+win32/core/downloads
+win32/core/database
+win32/core/bin/*
+!win32/core/bin/mkcert.exe
+win32/core/etc
+win32/core/custom
+
+# 大体积离线安装包不入库，按需从下载服务获取
+**/initFiles/downloads/
+
+.DS_Store
+**/.DS_Store
