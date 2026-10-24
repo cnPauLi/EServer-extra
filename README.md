@@ -64,14 +64,20 @@ node scripts/fetch-extra.mjs --force     # extra 存在但不是 Git 仓库时�
 
 ## 远端仓库
 
-本仓库同时维护在两个地址，内容一致，均为私有：
+本仓库同时维护在两个地址，内容一致：
 
-| 远端名 | 地址 | 说明 |
-| --- | --- | --- |
-| `gitee` | `git@gitee.com:dragonlhp/EServer-extra.git` | 主源，构建默认优先从这里拉取 |
-| `github` | `git@github.com:cnPauLi/EServer-extra.git` | 镜像备份 |
+| 远端名 | 地址 | 可见性 | 说明 |
+| --- | --- | --- | --- |
+| `gitee` | `git@gitee.com:dragonlhp/EServer-extra.git` | 私有 | 主源，构建默认优先从这里拉取 |
+| `github` | `git@github.com:cnPauLi/EServer-extra.git` | **公开** | 镜像备份，可匿名 HTTPS 拉取 |
 
-主仓库的 `fetch:extra` 会按 gitee → github 的顺序尝试，任一可用即可构建。
+github 为公开仓库，无需令牌即可直接拉取：
+
+```bash
+git clone https://github.com/cnPauLi/EServer-extra.git extra
+```
+
+主仓库的 `fetch:extra` 会按 gitee → github 的顺序尝试，gitee 不可用或缺少凭据时会自动回退到 github 公开镜像。
 
 ## 更新本仓库
 
